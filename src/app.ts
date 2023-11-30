@@ -1,7 +1,6 @@
 import {Observable, of, range, fromEvent, zip, merge } from 'rxjs'; 
 import { last,filter,scan,map,mergeMap,take,takeUntil } from 'rxjs/operators';
 import {Todo, State, CONSTANTS, Add} from './types';
-import {createRNGFromSource} from './state';
 
 /** Observables */
 
