@@ -1,42 +1,21 @@
-import {Todo, State} from './interfaces';
+import {Observable, of, range, fromEvent, zip, merge } from 'rxjs'; 
+import { last,filter,scan,map,mergeMap,take,takeUntil } from 'rxjs/operators';
+import {Todo, State, CONSTANTS, Add} from './types';
+import {createRNGFromSource} from './state';
 
-const initialState: State = {
-    todos: []
-};
+/** Observables */
 
+export function main() {
+    const click$ = fromEvent<MouseEvent>(document, 'click');
 
-/**
- * Adds a todo to the state.
- * @param state - The current state.
- * @param todo - The todo to be added.
- * @returns The updated state with the added todo.
- */
-function addTodo(state: State, todo: Todo): State {
-    return {
-        todos: [...state.todos, todo]
-    };
+    const rng$ = createRNGFromSource(click$);
+
+    const addTodo$ = rng$(CONSTANTS.GLOBAL_SEED).pipe(
+        map((seed: number) => new Add(seed, `Todo ${seed}`))
+    )           ;
 }
 
-/**
- * Toggles the 'done' property of a todo item in the state.
- * @param state - The current state of the application.
- * @param todo - The todo item to toggle.
- * @returns The updated state with the toggled todo item.
- */
-function toggleDone(state: State, todo: Todo): State {
-    return {
-        todos: state.todos.map((t) => t.id !== todo.id ? t : { ...t, done: !t.done })
-    }
-}
-
-/**
- * Removes a todo from the state.
- * @param state - The current state of todos.
- * @param todoToRemove - The todo to be removed.
- * @returns The updated state after removing the todo.
- */
-function removeTodo (state: State, todoToRemove: Todo): State {
-    return {
-        todos: state.todos.filter((t: Todo) => t.id !== todoToRemove.id)
-    }
+if (typeof window !== 'undefined') {
+    alert("mike penis")
+    main();
 }
