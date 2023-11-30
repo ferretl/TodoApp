@@ -1,8 +1,6 @@
-export { Todo, State, Action,CONSTANTS, Add, Remove, Complete };
+export { Todo, State, Action,Button, Add, Remove, Complete };
 
-const CONSTANTS = {
-    GLOBAL_SEED: new Date().getMilliseconds()
-}
+type Button = "addButton" | "removeButton" | "completeButton";
 
 
 type Todo = Readonly<{
@@ -26,7 +24,6 @@ type Action = Add | Remove | Complete;
  */
 class Add {
     constructor(
-        public readonly id:number, 
         public readonly text: string
         ) {}
 }

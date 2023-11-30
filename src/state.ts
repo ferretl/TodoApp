@@ -2,7 +2,7 @@ import {Observable ,of, range, fromEvent, zip, merge } from 'rxjs';
 import {last,filter,scan,map,mergeMap,take,takeUntil } from 'rxjs/operators';
 import {Todo, State, Action, Add, Remove, Complete} from './types';
 
-export {initialState};
+export {initialState, updateState};
 
 
 const initialState: State = {
@@ -63,7 +63,7 @@ const completeTodo = (state: State, id: number): State => {
  */
 const updateState = (state: State, action: Action): State => {
     if (action instanceof Add) {
-        return addTodo(state, {id: action.id, text: action.text, done: false});
+        return addTodo(state, {id: state.currentId + 1, text: action.text, done: false});
     }
     else if (action instanceof Remove) {
         return removeTodo(state, action.id);
