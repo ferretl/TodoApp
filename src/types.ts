@@ -12,7 +12,8 @@ type Todo = Readonly<{
 }>;
 
 type State = Readonly < {
-    todos: Todo[];
+    todos: Todo[]; // The list of todos
+    currentId: number; // The current id
 }>;
 /**
  * The action type 
@@ -24,7 +25,10 @@ type Action = Add | Remove | Complete;
  * Adds a todo
  */
 class Add {
-    constructor(public readonly id:number, text: string) {}
+    constructor(
+        public readonly id:number, 
+        public readonly text: string
+        ) {}
 }
 
 /**

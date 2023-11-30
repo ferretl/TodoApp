@@ -6,16 +6,9 @@ import {createRNGFromSource} from './state';
 /** Observables */
 
 export function main() {
-    const click$ = fromEvent<MouseEvent>(document, 'click');
-
-    const rng$ = createRNGFromSource(click$);
-
-    const addTodo$ = rng$(CONSTANTS.GLOBAL_SEED).pipe(
-        map((seed: number) => new Add(seed, `Todo ${seed}`))
-    )           ;
+    console.log('Hello World');
 }
 
 if (typeof window !== 'undefined') {
-    alert("mike penis")
     main();
 }
