@@ -10,6 +10,7 @@ import {
 } from "rxjs/operators";
 import { Todo, State, Button, Add } from "./types";
 import { initialState, updateState } from "./state";
+import { render } from "./view";
 
 /**
  * The main function that initializes the application.
@@ -53,7 +54,7 @@ export function main() {
   const source$ = merge(addClick$)
     .pipe(scan(updateState, initialState))
     .subscribe((state: State) => {
-      console.log(state);
+      render()(state);
     });
 }
 
