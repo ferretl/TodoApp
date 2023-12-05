@@ -1,15 +1,21 @@
-import {Observable ,of, range, fromEvent, zip, merge } from 'rxjs'; 
-import {last,filter,scan,map,mergeMap,take,takeUntil } from 'rxjs/operators';
-import {Todo, State, Action, Add, Remove, Complete} from './types';
+import { Observable, of, range, fromEvent, zip, merge } from "rxjs";
+import {
+  last,
+  filter,
+  scan,
+  map,
+  mergeMap,
+  take,
+  takeUntil,
+} from "rxjs/operators";
+import { Todo, State, Action, Add, Remove, Complete } from "./types";
 
-export {initialState, updateState};
-
+export { initialState, updateState };
 
 const initialState: State = {
-    todos: [],
-    currentId: 0
+  todos: [],
+  currentId: 0,
 };
-
 
 /**
  * Adds a todo to the state.
@@ -18,12 +24,16 @@ const initialState: State = {
  * @returns The updated state with the new todo.
  */
 const addTodo = (state: State, todo: Todo): State => {
-    return {
-        ...state,
-        todos: [...state.todos, todo],
-        currentId: state.currentId + 1
-    };
-}
+  // stops empty todo from being added
+  if (todo.text === "") {
+    return state;
+  }
+  return {
+    ...state,
+    todos: [...state.todos, todo],
+    currentId: state.currentId + 1,
+  };
+};
 
 /**
  * Removes a todo item from the state based on its id.
@@ -32,11 +42,11 @@ const addTodo = (state: State, todo: Todo): State => {
  * @returns The updated state with the todo item removed.
  */
 const removeTodo = (state: State, id: number): State => {
-    return {
-        ...state,
-        todos: state.todos.filter((todo: Todo) => todo.id !== id)
-    };
-}
+  return {
+    ...state,
+    todos: state.todos.filter((todo: Todo) => todo.id !== id),
+  };
+};
 
 /**
  * Marks a todo as complete in the state.
@@ -45,15 +55,13 @@ const removeTodo = (state: State, id: number): State => {
  * @returns The updated state with the todo marked as complete.
  */
 const completeTodo = (state: State, id: number): State => {
-    return {
-        ...state,
-        todos: state.todos.map((todo:Todo) => {
-            return todo.id === id ? {...todo, done: true} : todo;
-        })
-    }
-}
-
-
+  return {
+    ...state,
+    todos: state.todos.map((todo: Todo) => {
+      return todo.id === id ? { ...todo, done: true } : todo;
+    }),
+  };
+};
 
 /**
  * Updates the state based on the given action.
@@ -62,13 +70,16 @@ const completeTodo = (state: State, id: number): State => {
  * @returns The updated state.
  */
 const updateState = (state: State, action: Action): State => {
-    if (action instanceof Add) {
-        return addTodo(state, {id: state.currentId + 1, text: action.text, done: false});
-    }
-    else if (action instanceof Remove) {
-        return removeTodo(state, action.id);
-    }
-    else {
-        return completeTodo(state, action.id);
-    }
-}
+  if (action instanceof Add) {
+    return addTodo(state, {
+      id: state.currentId + 1,
+      text: action.text,
+      date: new Date(),
+      done: false,
+    });
+  } else if (action instanceof Remove) {
+    return removeTodo(state, action.id);
+  } else {
+    return completeTodo(state, action.id);
+  }
+};

@@ -6,6 +6,7 @@ type Button = "addButton" | "removeButton" | "completeButton";
 type Todo = Readonly<{
     id: number;
     text: string;
+    date: Date;
     done: boolean;
 }>;
 
