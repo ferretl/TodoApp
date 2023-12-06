@@ -46,6 +46,9 @@ export function main() {
     () => new Add(getInputElement("todoInput").value)
   );
 
+  
+    
+
   /**
    * Observable representing the source stream.
    * It merges the addClick$ stream and applies the scan operator with the updateState function and initialState.

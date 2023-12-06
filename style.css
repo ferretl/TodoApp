@@ -59,10 +59,11 @@ body {
     color: #000;
 }
 
-.main li {
+.main span {
     padding: 10px;
     text-align: left;
     position: relative;
+    font-size: 16px;
 }
 
 .main li:hover {

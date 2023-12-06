@@ -10,7 +10,7 @@ import {
 } from "rxjs/operators";
 import { Todo, State, Action, Add, Remove, Complete } from "./types";
 
-export { initialState, updateState };
+export { initialState, updateState, completeTodo, addTodo, removeTodo };
 
 const initialState: State = {
   todos: [],
