@@ -15,19 +15,23 @@ function render(){
             // Create the spanm for the todo item's text
             const todoText = document.createElement("span");
             todoText.innerHTML = todo.text;
+            // make text strike through if todo is done
+            if(todo.done){
+                todoText.style.textDecoration = "line-through";
+            }
             todoItem.appendChild(todoText);
 
             // Crearte a Complete button
             const completeButton = document.createElement("button");
             completeButton.innerHTML = "Complete";
-            completeButton.className = "completeButton";
+            completeButton.id = "completeButton";
             completeButton.setAttribute("data-id", todo.id.toString());
             todoItem.appendChild(completeButton)
 
             // Create a Remove button
             const removeButton = document.createElement("button");
             removeButton.innerHTML = "Remove";
-            removeButton.className = "removeButton";
+            removeButton.id = "removeButton";
             removeButton.setAttribute("data-id", todo.id.toString());
             todoItem.appendChild(removeButton);
 
