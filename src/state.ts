@@ -12,11 +12,12 @@ import { Todo, State, Action, Add, Remove, Complete } from "./types";
 
 export { initialState, updateState, completeTodo, addTodo, removeTodo };
 
-const initialState: State = {
-  todos: [],
-  currentId: 0,
-};
-
+/**
+ * The initial state of the application.
+ */
+const initialState: State = JSON.parse(
+  localStorage.getItem("state") || '{"todos": [], "currentId": 0}'
+);
 /**
  * Adds a todo to the state.
  * @param state - The current state.
@@ -70,16 +71,21 @@ const completeTodo = (state: State, id: number): State => {
  * @returns The updated state.
  */
 const updateState = (state: State, action: Action): State => {
-  if (action instanceof Add) {
-    return addTodo(state, {
-      id: state.currentId + 1,
-      text: action.text,
-      date: new Date(),
-      done: false,
-    });
-  } else if (action instanceof Remove) {
-    return removeTodo(state, action.id);
-  } else {
-    return completeTodo(state, action.id);
-  }
+  const updatedState = () => {
+    if (action instanceof Add) {
+      return addTodo(state, {
+        id: state.currentId + 1,
+        text: action.text,
+        date: new Date(),
+        done: false,
+      });
+    } else if (action instanceof Remove) {
+      return removeTodo(state, action.id);
+    } else {
+      return completeTodo(state, action.id);
+    }
+  };
+  const newState = updatedState();
+  localStorage.setItem("state", JSON.stringify(newState));
+  return newState;
 };

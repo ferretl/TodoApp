@@ -36,32 +36,43 @@ export function main() {
   );
 
   // Creates an observable that emits a value when the removeButton is clicked.
-  const removeClick$ = fromButton(
-    "removeButton",
-    (event: Event) => {
-      const id = parseInt((event.target as HTMLElement).getAttribute("data-id")!);
-      return new Remove(id);
-    }
+  const removeClick$ = fromButton("removeButton", (event: Event) => {
+    const id = parseInt((event.target as HTMLElement).getAttribute("data-id")!);
+    return new Remove(id);
+  });
+
+  /*
+   *Creates an observable that emits a value when the completeButton
+   *is clicked.
+   */
+  const completeClick$ = fromButton("completeButton", (event: Event) => {
+    const id = parseInt((event.target as HTMLElement).getAttribute("data-id")!);
+    return new Complete(id);
+  });
+
+  /**
+   * Observable representing the page load event.
+   * It applies the scan operator with the initialState and renders the initial
+   * state to the page.
+   */
+  const pageLoad$ = fromEvent<Event>(window, "load").pipe(
+    scan((state: State) => state, initialState)
   );
 
-  // Creates an observable that emits a value when the completeButton is clicked. 
-  const completeClick$ = fromButton("completeButton",
-    (event: Event) => {
-      const id = parseInt((event.target as HTMLElement).getAttribute("data-id")!);
-      return new Complete(id);
-    }
-  );
-
-
+  pageLoad$.subscribe((state: State) => {
+    render()(state);
+  });
 
   /**
    * Observable representing the source stream.
-   * It merges the addClick$ stream and applies the scan operator with the updateState function and initialState.
+   * It merges the addClick$ stream and applies the scan operator with the
+   *  updateState function and initialState.
    * Subscribes to the resulting stream and logs the state to the console.
    */
-  const source$ = merge(addClick$, removeClick$, completeClick$)
-    .pipe(scan(updateState, initialState))
-    
+  const source$ = merge(addClick$, removeClick$, completeClick$).pipe(
+    scan(updateState, initialState)
+  );
+
   source$.subscribe((state: State) => {
     render()(state);
   });
